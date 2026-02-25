@@ -1,4 +1,4 @@
-# 📸 License Plate Recognition System - Complete Documentation
+# License Plate Recognition System
 
 ## 🎯 Quick Overview
 
