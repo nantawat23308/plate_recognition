@@ -1,3 +1,4 @@
+import numpy as np
 from ultralytics import YOLO
 from roboflow import Roboflow
 import os
@@ -32,7 +33,7 @@ class CarPlateDetector:
         crop = frame[max(0, y1 - 5):min(h, y2 + 5), max(0, x1 - 5):min(w, x2 + 5)]
         return crop
 
-    def process_image(self, image_path):
+    def process_image(self, image_path) -> np.ndarray:
         frame = self.read_image(image_path)
         width, height = frame.shape[1], frame.shape[0]
         car_detected = self.car_detector.detect_car(frame)
@@ -61,11 +62,12 @@ class CarPlateDetector:
                 frame = draw_thai_text(frame, text, (bbox_original[0], bbox_original[1] - 40), color=(255, 0, 0))
                 # cv2.putText(frame, text, (bbox_original[0], bbox_original[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        plt.imsave("result.png", frame)
+        # plt.imsave("result.png", frame)
         plt.imshow(frame)
         plt.axis("off")
         plt.show()
 
+        return frame
 
 
 def detect_car(image_path):
@@ -83,7 +85,7 @@ def detect_plate(frame):
     model = YOLO("")
 
 def main():
-    image_path = "/home/nantawat/Desktop/my_project/plate_recognition/dataset/l711n5sj8se31.jpg"
+    image_path = "/home/nantawat/Desktop/my_project/plate_recognition/dataset/img_1.png"
     car_plate_detector = CarPlateDetector()
     car_plate_detector.process_image(image_path)
 

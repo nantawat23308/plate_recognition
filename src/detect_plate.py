@@ -52,7 +52,8 @@ if __name__ == '__main__':
     frame = cv2.imread("/home/nantawat/Desktop/my_project/plate_recognition/dataset/l711n5sj8se31.jpg")
     detected_plates = plate_detector.detect_plate(frame)
     for idx, plate in enumerate(detected_plates):
-        plt.subplot(1, len(detected_plates), idx + 1)
-        plt.imshow(cv2.cvtColor(plate, cv2.COLOR_BGR2RGB))
+        # plt.subplot(1, len(detected_plates), idx + 1)
+        cv2.rectangle(frame, (plate['bbox'][0], plate['bbox'][1]), (plate['bbox'][2], plate['bbox'][3]), (0, 255, 0), 2)
+        plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         plt.axis("off")
     plt.show()

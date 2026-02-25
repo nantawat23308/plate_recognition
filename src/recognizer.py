@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def draw_thai_text(img, text, position, color=(255, 0, 0), font_size=80):
+def draw_thai_text(img, text, position, color=(255, 0, 0), font_size=30):
     """
     OpenCV cannot draw Thai text. We use PIL to draw it, then convert back to OpenCV.
     """

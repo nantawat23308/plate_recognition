@@ -47,7 +47,8 @@ class CarDetector:
             print(f"Corner: {car}")
             top_left, top_right, bottom_right, bottom_left = car
             print(f"Top Left: {top_left}, Top Right: {top_right}, Bottom Right: {bottom_right}, Bottom Left: {bottom_left}")
-            cv2.rectangle(image, top_left, bottom_right, (0, 255, 0), 2)
+            cv2.rectangle(image, top_left, bottom_right, (0, 255, 0), 10)
+        plt.imsave("car_detection_result.png", cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         plt.axis("off")
         plt.show()
