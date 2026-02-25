@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def draw_thai_text(img, text, position, color=(255, 0, 0), font_size=30):
+def draw_thai_text(img, text, position, color=(255, 0, 0), font_size=80):
     """
     OpenCV cannot draw Thai text. We use PIL to draw it, then convert back to OpenCV.
     """
@@ -41,7 +41,8 @@ class PaddleOCRPipeline:
         detected_texts = ""
         rectangle = []
         for result in results:
-            rectangle = result.get("box")
+            print(result.keys())
+            rectangle = result.get("rec_boxes")
             rec_text = (result.get("rec_texts"))
             conf = result.get("rec_scores")
             print(f"Detected: {rec_text} with confidence {conf}")
@@ -51,7 +52,7 @@ class PaddleOCRPipeline:
 
 if __name__ == "__main__":
     ocr_pipeline = PaddleOCRPipeline()
-    image_path = "/home/nantawat/Desktop/my_project/plate_recognition/dataset/l711n5sj8se31.jpg"
+    image_path = "/home/nantawat/Desktop/my_project/plate_recognition/dataset/img_3.png"
     detected_text, box = ocr_pipeline.predict(image_path)
     print(f"Final Detected Text: {detected_text}")
     print(f"Bounding Box: {box}")

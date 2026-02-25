@@ -5,8 +5,9 @@ from dotenv import load_dotenv
 from src.annotate import extract_corners
 from src.detect_car import CarDetector
 from src.detect_plate import PlateDetector
-from src.recognizer import PaddleOCRPipeline
+from src.recognizer import PaddleOCRPipeline, draw_thai_text
 import cv2
+import matplotlib.pyplot as plt
 load_dotenv()
 
 class CarPlateDetector:
@@ -33,18 +34,37 @@ class CarPlateDetector:
 
     def process_image(self, image_path):
         frame = self.read_image(image_path)
+        width, height = frame.shape[1], frame.shape[0]
         car_detected = self.car_detector.detect_car(frame)
-        car_image = []
+
         for car in car_detected:
             print(f"Detected car with corners: {car}")
-            crop_car = self.crop_plate(frame, car)
-            car_image.append(crop_car)
+            x1_car, y1_car = car[0]  # top-left corner of car
+            x2_car, y2_car = car[2]  # bottom-right corner of car
 
-        for car in car_image:
-            plate_detected = self.plate_detector.detect_plate(car)
-            for plate in plate_detected:
-                text = self.recognizer.predict(plate)
+            crop_car = self.crop_plate(frame, car)
+
+            # Detect plates in the cropped car image
+            # Pass offset to convert plate coordinates back to original image space
+            plate_detected = self.plate_detector.detect_plate(crop_car, offset=(x1_car, y1_car))
+
+            for plate_info in plate_detected:
+                plate_crop = plate_info['crop']
+                bbox_original = plate_info['bbox']  # Coordinates in original image
+                bbox_in_crop = plate_info['bbox_in_crop']  # Coordinates in cropped car image
+
+                text, ocr_bbox = self.recognizer.predict(plate_crop)
                 print(f"Recognized Plate Text: {text}")
+                print(f"Plate Bounding Box (original image): {bbox_original}")
+                print(f"Plate Bounding Box (in crop): {bbox_in_crop}")
+                cv2.rectangle(frame, (bbox_original[0], bbox_original[1]), (bbox_original[2], bbox_original[3]), (0, 255, 0), 2)
+                frame = draw_thai_text(frame, text, (bbox_original[0], bbox_original[1] - 40), color=(255, 0, 0))
+                # cv2.putText(frame, text, (bbox_original[0], bbox_original[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        plt.imsave("result.png", frame)
+        plt.imshow(frame)
+        plt.axis("off")
+        plt.show()
 
 
 
@@ -62,6 +82,10 @@ def detect_car(image_path):
 def detect_plate(frame):
     model = YOLO("")
 
+def main():
+    image_path = "/home/nantawat/Desktop/my_project/plate_recognition/dataset/l711n5sj8se31.jpg"
+    car_plate_detector = CarPlateDetector()
+    car_plate_detector.process_image(image_path)
 
 if __name__ == "__main__":
-    pass
+    main()

@@ -10,8 +10,17 @@ class CarDetector:
         self.model = YOLO(model_path)
         self.car_classes = [2, 3, 5, 7]  # COCO classes for car, motorcycle, bus, truck
 
-    def detect_car(self, image_path) -> list:
-        results = self.model.predict(source=image_path, classes=self.car_classes)
+    def detect_car(self, input_data) -> list:
+        """
+        Detect cars in image.
+
+        Args:
+            input_data: Can be either image path (str) or numpy array (frame)
+
+        Returns:
+            List of car corner coordinates
+        """
+        results = self.model.predict(source=input_data, classes=self.car_classes)
         detected_cars = []
         for result in results:
             boxes = result.boxes.cpu().numpy()
@@ -33,7 +42,7 @@ class CarDetector:
 
     def plot_results(self, image_path):
         image = cv2.imread(image_path)
-        detect_cars = self.detect_car(image_path=image)
+        detect_cars = self.detect_car(image)
         for car in detect_cars:
             print(f"Corner: {car}")
             top_left, top_right, bottom_right, bottom_left = car
