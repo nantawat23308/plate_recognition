@@ -1,0 +1,16 @@
+nc: 1 # number of classes
+scales: # model compound scaling constants
+  n: [0.33, 0.25, 1024]
+
+
+#backbone: # [from, number, module, args]
+backbone:
+  - [-1, 1, timm.create_model, ['resnet50', True, {'feature_only': True}]] # 0-P1/2
+
+
+#head: # [from, number, module, args]
+head:
+  - [-1, 1, Conv, [256, 1, 1]]
+  - [-1, 1, nn.Upscale, [None, 2, 'nearest']]
+  - [[-1, 1], 1, Concat, [1]]
+  # ... add more layers as needed
