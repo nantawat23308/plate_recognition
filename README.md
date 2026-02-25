@@ -501,18 +501,18 @@ padding = 5  # pixels
 
 ## 📝 Summary
 
-| Aspect | Details |
-|--------|---------|
-| **What** | License plate recognition system |
+| Aspect | Details                                             |
+|--------|-----------------------------------------------------|
+| **What** | License plate recognition system                    |
 | **How** | 4-stage pipeline: car → plate → OCR → visualization |
-| **Input** | Image file path |
-| **Output** | Annotated image + console output |
-| **Models** | 2x YOLOv8 + PaddleOCR |
-| **Speed** | 300-600ms (GPU) / 2-5s (CPU) |
-| **Accuracy** | 85-95% depending on plate quality |
-| **Thai Support** | Full support (OCR + font rendering) |
-| **Language** | Python 3.8+ |
-| **License** | Project-specific |
+| **Input** | Image file path                                     |
+| **Output** | Annotated image + console output                    |
+| **Models** | 2x YOLOv26 + PaddleOCR                              |
+| **Speed** | 300-600ms (GPU) / 2-5s (CPU)                        |
+| **Accuracy** | 85-95% depending on plate quality                   |
+| **Thai Support** | Full support (OCR + font rendering)                 |
+| **Language** | Python 3.8+                                         |
+| **License** | Project-specific                                    |
 
 ---
 
