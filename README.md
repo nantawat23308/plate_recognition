@@ -3,8 +3,8 @@
 ## 🎯 Quick Overview
 
 This is a **complete, production-ready license plate recognition system** that:
-1. **Detects vehicles** in images using YOLOv8
-2. **Detects license plates** on those vehicles using custom-trained YOLOv8
+1. **Detects vehicles** in images using YOLOv26
+2. **Detects license plates** on those vehicles using custom-trained YOLOv26
 3. **Recognizes plate text** using PaddleOCR (Thai & English support)
 4. **Visualizes results** with bounding boxes and text overlays
 
@@ -21,13 +21,13 @@ Input Image → Car Detection → Plate Detection → Text Recognition → Annot
 │         LICENSE PLATE RECOGNITION PIPELINE                  │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  STAGE 1: CAR DETECTION (YOLOv8)                           │
+│  STAGE 1: CAR DETECTION (YOLOv26)                           │
 │  ────────────────────────────────────                       │
 │  Model: yolo26n.pt (COCO pre-trained)                      │
 │  Input: Full image (1920x1080)                             │
 │  Output: Vehicle bounding boxes                            │
 │                                                             │
-│  STAGE 2: PLATE DETECTION (Custom YOLOv8)                  │
+│  STAGE 2: PLATE DETECTION (Custom YOLOv26)                  │
 │  ────────────────────────────────────                       │
 │  Model: best.pt (Custom-trained)                           │
 │  Input: Cropped car regions                                │
@@ -140,7 +140,7 @@ detector.crop_plate(frame, corners)
 
 ### **2. CarDetector Class** (src/detect_car.py)
 
-Detects vehicles using YOLOv8 COCO pre-trained model.
+Detects vehicles using YOLOv26 COCO pre-trained model.
 
 ```python
 car_detector = CarDetector("yolo26n.pt")
@@ -184,7 +184,7 @@ Input Image File
     │   └─→ Load to memory (numpy array, BGR)
     │
     ├─→ car_detector.detect_car()
-    │   └─→ YOLOv8 inference
+    │   └─→ YOLOv26 inference
     │       └─→ Returns list of cars
     │
     ├─→ FOR EACH CAR:
@@ -193,7 +193,7 @@ Input Image File
     │   │   └─→ Extract car region with padding
     │   │
     │   ├─→ plate_detector.detect_plate()
-    │   │   └─→ YOLOv8 inference
+    │   │   └─→ YOLOv26 inference
     │   │   └─→ Coordinate conversion
     │   │       └─→ Returns list of plates
     │   │
@@ -269,7 +269,7 @@ Input Image File
 ### **Memory Usage**
 | Component | Memory |
 |-----------|--------|
-| YOLOv8 models | 2-3 GB |
+| YOLOv26 models | 2-3 GB |
 | PaddleOCR | 500MB |
 | Total | 2.5-3.5 GB |
 
@@ -389,11 +389,11 @@ sudo apt-get install fonts-thai-tlwg
 ```
 Full Image
     ↓
-Car Detection (YOLOv8)
+Car Detection (YOLOv26)
     ↓
 Crop Car Regions
     ↓
-Plate Detection in Crops (Custom YOLOv8)
+Plate Detection in Crops (Custom YOLOv26)
     ↓
 Convert Coordinates Back to Original
     ↓
@@ -445,7 +445,7 @@ recognizer = PaddleOCRPipeline(ocr_lang="th")
 confidence_threshold = 0.5  # Default
 
 # Image size
-input_size = 640  # YOLOv8 default
+input_size = 640  # YOLOv26 default
 
 # NMS threshold
 nms_threshold = 0.45
@@ -465,7 +465,7 @@ padding = 5  # pixels
 - BOUNDING_BOX_CONVERSION_GUIDE.md - Coordinate conversion
 
 **External Resources:**
-- [YOLOv8 Documentation](https://docs.ultralytics.com/)
+- [YOLOv26 Documentation](https://docs.ultralytics.com/)
 - [PaddleOCR GitHub](https://github.com/PaddlePaddle/PaddleOCR)
 - [OpenCV Documentation](https://docs.opencv.org/)
 
